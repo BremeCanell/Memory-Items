@@ -2,17 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Memory_Items
 {
     public partial class Form1 : Form
     {
         private Host host;
-
+        
         public Form1()
         {
             InitializeComponent();
             host = new Host();
+            label1.Parent = pictureBox1;
+            label2.Parent = pictureBox2;
+            button1.Parent = pictureBox3;
+            checkBox1.Parent = pictureBox2;
+            checkBox2.Parent = pictureBox2;
+            checkBox3.Parent = pictureBox2;
+            checkBox4.Parent = pictureBox2;
+            checkBox5.Parent = pictureBox2;
+            checkBox6.Parent = pictureBox2;
+            checkBox7.Parent = pictureBox2;
+            checkBox8.Parent = pictureBox2;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -36,9 +48,9 @@ namespace Memory_Items
                 }
             }
 
-            host.Value = textBox9.Text;
+            host.Name = textBox9.Text;
 
-            Match.Start_Match(this, host, checkBoxes, textBoxes);
+            Match.Start_Match(this, checkBoxes, textBoxes);
         }
     }
 }

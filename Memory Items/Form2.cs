@@ -15,6 +15,8 @@ namespace Memory_Items
         {
             InitializeComponent();
             this.textBoxValues = textBoxValues;
+            label1.Parent = pictureBox21;
+            label2.Parent = pictureBox22;
 
             Tray tray = new Tray();
             randomItems = tray.GetRandomItems();
@@ -38,12 +40,10 @@ namespace Memory_Items
                 timer.Stop();
                 Form3 form3 = new Form3(textBoxValues, randomItems);
                 form3.Show();
-                this.Hide();
+                this.Close();
             }
 
             Match.Show_Timer(label2, match.Show_time);
         }
-
-        
     }
 }
