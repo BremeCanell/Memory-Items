@@ -8,16 +8,19 @@ namespace Memory_Items
 {
     class Match
     {
-
         public int Show_time { get; set; }
 
         public Match()
         {
-            Show_time = 10;
+            Show_time = 5;
+        }
+        class ParticipantResult
+        {
+            public string Name { get; set; }
+            public int CorrectAnswers { get; set; }
         }
 
-
-        public static void Start_Match(Form1 form, Host host, List<CheckBox> checkBoxes, List<TextBox> textBoxes)
+        public static void Start_Match(Form1 form, List<CheckBox> checkBoxes, List<TextBox> textBoxes)
         {
             bool areFieldsValid = true;
             HashSet<string> uniqueValues = new HashSet<string>();
@@ -83,56 +86,62 @@ namespace Memory_Items
 
         public void Show_Winner(Form form, List<int> clicksCount, List<string> textBoxValues)
         {
+
             List<int> maxIndexes = Check_Winner(clicksCount);
 
-            Label label = new Label
+            PictureBox pictureBox1 = new PictureBox
             {
-                Text = maxIndexes.Count == 1 ? "Победитель" : "Победители:",
-                Font = new Font("Microsoft Sans Serif", 14),
-                AutoSize = true,
-                Location = new Point(200, 150)
+                Width = 574,
+                Height = 394,
+                Location = new Point(225, 130),
+                BackColor = Color.Transparent,
+                Image = Image.FromFile(@"C:\Users\User\source\repos\Memory Items\Memory Items\Back\VeryBoard.png"),
+                SizeMode = PictureBoxSizeMode.StretchImage,
             };
-            form.Controls.Add(label);
-
-            for (int i = 0; i < maxIndexes.Count; i++)
-            {
-                Label resultLabel = new Label
-                {
-                    Text = $"{textBoxValues[maxIndexes[i]]}: {clicksCount[maxIndexes[i]]}",
-                    Font = new Font("Microsoft Sans Serif", 14),
-                    AutoSize = true,
-                    Location = new Point(200, 180 + i * 30)
-                };
-                form.Controls.Add(resultLabel);
-            }
+            form.Controls.Add(pictureBox1);
 
             Label allResultsLabel = new Label
             {
+                BackColor = Color.Transparent,
                 Text = "Результаты всех участников:",
-                Font = new Font("Microsoft Sans Serif", 14),
+                Font = new Font("Segoe Print", 15),
                 AutoSize = true,
-                Location = new Point(600, 150)
+                Location = new Point(94, 25)
             };
-            form.Controls.Add(allResultsLabel);
+            pictureBox1.Controls.Add(allResultsLabel);
 
-            for (int i = 0; i < clicksCount.Count; i++)
+            List<ParticipantResult> participantResults = new List<ParticipantResult>();
+
+            for (int i = 0; i < textBoxValues.Count; i++)
+            {
+                participantResults.Add(new ParticipantResult
+                {
+                    Name = textBoxValues[i],
+                    CorrectAnswers = clicksCount[i]
+                });
+            }
+
+            participantResults = participantResults.OrderByDescending(x => x.CorrectAnswers).ToList();
+
+            for (int i = 0; i < participantResults.Count; i++)
             {
                 Label participantResultLabel = new Label
                 {
-                    Text = $"{textBoxValues[i]}: {clicksCount[i]}",
-                    Font = new Font("Microsoft Sans Serif", 14),
+                    BackColor = Color.Transparent,
+                    TextAlign = ContentAlignment.TopCenter,
+                    Text = $"{participantResults[i].Name}: {participantResults[i].CorrectAnswers}",
+                    Font = new Font("Segoe Print", 17),
                     AutoSize = true,
-                    Location = new Point(600, 180 + i * 30)
+                    Location = new Point(100, 60 + i * 35)
                 };
-                form.Controls.Add(participantResultLabel);
+                pictureBox1.Controls.Add(participantResultLabel);
             }
         }
     
-
         public static void Show_Timer(Label label, int Show_time)
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds(Show_time);
-            label.Text = timeSpan.ToString(@"mm\:ss");
+            label.Text = timeSpan.ToString(@"ss");
         }
 
         public void Timer_Tick(object sender, EventArgs e)

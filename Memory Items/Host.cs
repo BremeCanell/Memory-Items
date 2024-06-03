@@ -8,6 +8,6 @@ namespace Memory_Items
 {
     class Host
     {
-        public string Value { get; set; }
+        public string Name { get; set; }
     }
 }
